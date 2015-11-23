@@ -19,9 +19,9 @@
 module RhsmCookbook
   module RhsmHelpers
     def register_command
-      command = [ 'subscription-manager register ']
+      command = %w(subscription-manager register)
 
-      if activation_keys
+      if !activation_keys.empty?
         raise 'Unable to register - must specify organization when using activation keys' if organization.nil?
 
         command << activation_keys.map { |key| "--activationkey=#{key}" }
@@ -41,9 +41,7 @@ module RhsmCookbook
     end
 
     def activation_keys
-      return unless activation_key
-
-      activation_key.respond_to?(:each) ? activation_key : [ activation_key ]
+      Array(activation_key)
     end
 
     def registered_with_rhsm?
@@ -71,8 +69,8 @@ module RhsmCookbook
     end
 
     def validate_errata_level!(level)
-      raise "Invalid errata level: #{level} - must be: Critical, Moderate, Important, or Low" unless
-        %w(Critical Moderate Important Low).include?(level)
+      raise "Invalid errata level: #{level.downcase} - must be: critical, moderate, important, or low" unless
+        %w(critical moderate important low).include?(level.downcase)
     end
 
     def serials_by_pool
@@ -82,7 +80,8 @@ module RhsmCookbook
 
       cmd = Mixlib::ShellOut.new('subscription-manager list --consumed')
       cmd.run_command
-      cmd.stdout.split("\n").each do |line|
+      cmd.stdout.lines.each do |line|
+        line.strip!
         key, value = line.split(/:\s+/, 2)
         next unless [ 'Pool ID', 'Serial' ].include?(key)
 

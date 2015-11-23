@@ -28,7 +28,7 @@ module RhsmCookbook
       validate_errata_level!(errata_level)
 
       execute "Install any #{errata_level} errata" do
-        command "yum update --sec-severity=#{errata_level} -y"
+        command "yum update --sec-severity=#{errata_level.capitalize} -y"
         action :run
       end
     end

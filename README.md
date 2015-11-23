@@ -177,14 +177,15 @@ associated with errata marked at a "Critical" security level are installed.
 None.  The name passed in to the resource will be the security level to use when
 installing packages.
 
-Valid security levels are: Critical, Moderate, Important, and Low
+Valid security levels are: critical, moderate, important, and low. While `yum`
+is case sensitive, the values expected by this cookbook are not.
 
 #### Examples
 
 ```ruby
-rhsm_errata_level 'Critical'
+rhsm_errata_level 'critical'
 
-rhsm_errata_level 'Important' do
+rhsm_errata_level 'IMPORTANT' do
   action :install
 end
 ```

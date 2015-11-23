@@ -28,7 +28,7 @@ describe 'RhsmCookbook::RhsmHelpers' do
 
   describe '#register_command' do
     before do
-      allow(resource).to receive(:activation_keys)
+      allow(resource).to receive(:activation_keys).and_return([])
       allow(resource).to receive(:auto_attach)
     end
 
@@ -76,7 +76,7 @@ describe 'RhsmCookbook::RhsmHelpers' do
 
     context 'when no activation keys, username, or password exist' do
       it 'raises an exception' do
-        allow(resource).to receive(:activation_keys).and_return(nil)
+        allow(resource).to receive(:activation_keys).and_return([])
         allow(resource).to receive(:username).and_return(nil)
         allow(resource).to receive(:password).and_return(nil)
 
@@ -111,29 +111,6 @@ describe 'RhsmCookbook::RhsmHelpers' do
         allow(resource).to receive(:auto_attach).and_return(nil)
 
         expect(resource.register_command).not_to match('--auto-attach')
-      end
-    end
-  end
-
-  describe '#activation_keys' do
-    context 'when no activation keys are provided' do
-      it 'returns nil' do
-        allow(resource).to receive(:activation_key).and_return(nil)
-        expect(resource.activation_keys).to eq(nil)
-      end
-    end
-
-    context 'when the activation key is a string' do
-      it 'returns an array containing the single string' do
-        allow(resource).to receive(:activation_key).and_return('key1')
-        expect(resource.activation_keys).to eq(%w(key1))
-      end
-    end
-
-    context 'when the activation key is an array' do
-      it 'returns the array' do
-        allow(resource).to receive(:activation_key).and_return(%w(key1 key2))
-        expect(resource.activation_keys).to eq(%w(key1 key2))
       end
     end
   end
