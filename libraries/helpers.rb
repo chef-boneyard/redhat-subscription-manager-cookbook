@@ -1,0 +1,109 @@
+#
+# Author:: Chef Partner Engineering (<partnereng@chef.io>)
+# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+module RhsmCookbook
+  module RhsmHelpers
+    def register_command
+      command = [ 'subscription-manager register ']
+
+      if activation_keys
+        raise 'Unable to register - must specify organization when using activation keys' if organization.nil?
+
+        command << activation_keys.map { |key| "--activationkey=#{key}" }
+        command << "--org=#{organization}"
+      elsif username && password
+        raise 'Unable to register - must specify environment when using username/password' if environment.nil?
+
+        command << "--username=#{username}"
+        command << "--password=#{password}"
+        command << "--environment=#{environment}"
+      else
+        raise 'Unable to create register command - must specify activation_key or username/password'
+      end
+
+      command << '--auto-attach' if auto_attach
+      command.join(' ')
+    end
+
+    def activation_keys
+      return unless activation_key
+
+      activation_key.respond_to?(:each) ? activation_key : [ activation_key ]
+    end
+
+    def registered_with_rhsm?
+      cmd = Mixlib::ShellOut.new('subscription-manager status')
+      cmd.run_command
+      !cmd.stdout.match(/Overall Status: Unknown/)
+    end
+
+    def katello_cert_rpm_installed?
+      cmd = Mixlib::ShellOut.new('rpm -qa | grep katello-ca-consumer')
+      cmd.run_command
+      !cmd.stdout.match(/katello-ca-consumer/).nil?
+    end
+
+    def subscription_attached?(subscription)
+      cmd = Mixlib::ShellOut.new("subscription-manager list --consumed | grep #{subscription}")
+      cmd.run_command
+      !cmd.stdout.match(/Pool ID:\s+#{subscription}$/).nil?
+    end
+
+    def repo_enabled?(repo)
+      cmd = Mixlib::ShellOut.new('subscription-manager repos --list-enabled')
+      cmd.run_command
+      !cmd.stdout.match(/Repo ID:\s+#{repo}$/).nil?
+    end
+
+    def validate_errata_level!(level)
+      raise "Invalid errata level: #{level} - must be: Critical, Moderate, Important, or Low" unless
+        %w(Critical Moderate Important Low).include?(level)
+    end
+
+    def serials_by_pool
+      serials = {}
+      pool = nil
+      serial = nil
+
+      cmd = Mixlib::ShellOut.new('subscription-manager list --consumed')
+      cmd.run_command
+      cmd.stdout.split("\n").each do |line|
+        key, value = line.split(/:\s+/, 2)
+        next unless [ 'Pool ID', 'Serial' ].include?(key)
+
+        if key == 'Pool ID'
+          pool = value
+        elsif key == 'Serial'
+          serial = value
+        end
+
+        next unless pool && serial
+
+        serials[pool] = serial
+        pool = nil
+        serial = nil
+      end
+
+      serials
+    end
+
+    def pool_serial(pool_id)
+      serials_by_pool[pool_id]
+    end
+  end
+end
