@@ -1,0 +1,31 @@
+---
+driver:
+  name: ec2
+  region: us-east-1
+  availability_zone: a
+  instance_type: t2.micro
+  associate_public_ip: true
+  tags:
+    created-by: test-kitchen
+    X-Project: Partner Engineering / Red Hat Satellite
+
+provisioner:
+  name: chef_zero
+
+transport:
+  username: ec2-user
+
+platforms:
+  - name: rhel7
+    driver:
+      image_id: ami-12663b7a
+
+suites:
+  - name: default
+    run_list:
+      - recipe[rhsm_test::default]
+    attributes:
+      rhsm:
+        activation_key: <%= ENV['rhsm_activation_key'] %>
+        satellite_host: <%= ENV['rhsm_satellite_host'] %>
+        organization: <%= ENV['rhsm_organization'] %>
