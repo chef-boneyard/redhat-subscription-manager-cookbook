@@ -22,6 +22,7 @@ describe 'rhsm_test::unit' do
   context 'rhsm_register' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(
+        file_cache_path: '/tmp/chefspec',
         step_into: 'rhsm_register'
       ).converge(described_recipe)
     end
@@ -31,7 +32,7 @@ describe 'rhsm_test::unit' do
     end
 
     context 'when satellite_host is provided and host is not registered' do
-      let(:remote_file) { chef_run.remote_file('/tmp/katello-package.rpm') }
+      let(:remote_file) { chef_run.remote_file('/tmp/chefspec/katello-package.rpm') }
 
       before do
         allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(false)
@@ -39,7 +40,7 @@ describe 'rhsm_test::unit' do
       end
 
       it 'fetches the katello RPM' do
-        expect(chef_run).to create_remote_file('/tmp/katello-package.rpm')
+        expect(chef_run).to create_remote_file('/tmp/chefspec/katello-package.rpm')
       end
 
       it 'installs the katello package' do
@@ -50,7 +51,7 @@ describe 'rhsm_test::unit' do
     context 'when satellite_host is nil' do
       it 'does not fetch the katello RPM' do
         allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return(nil)
-        expect(chef_run).not_to create_remote_file('/tmp/katello-package.rpm')
+        expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
       end
     end
 
@@ -58,7 +59,7 @@ describe 'rhsm_test::unit' do
       it 'does not fetch the katello RPM' do
         allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return('sathost')
         allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(true)
-        expect(chef_run).not_to create_remote_file('/tmp/katello-package.rpm')
+        expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
       end
     end
 
@@ -71,7 +72,7 @@ describe 'rhsm_test::unit' do
     end
 
     it 'deletes the katello RPM file' do
-      expect(chef_run).to delete_file('/tmp/katello-package.rpm')
+      expect(chef_run).to delete_file('/tmp/chefspec/katello-package.rpm')
     end
 
     it 'installs the katello-agent package' do
