@@ -32,7 +32,7 @@ module RhsmCookbook
     property :auto_attach,         kind_of: [ TrueClass, FalseClass ], default: false
 
     action :register do
-      remote_file '/tmp/katello-package.rpm' do
+      remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
         source "http://#{satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
         action :create
         notifies :install, 'yum_package[katello-ca-consumer-latest]', :immediately
@@ -41,11 +41,11 @@ module RhsmCookbook
 
       yum_package 'katello-ca-consumer-latest' do
         options '--nogpgcheck'
-        source '/tmp/katello-package.rpm'
+        source "#{Chef::Config[:file_cache_path]}/katello-package.rpm"
         action :nothing
       end
 
-      file '/tmp/katello-package.rpm' do
+      file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
         action :delete
       end
 
