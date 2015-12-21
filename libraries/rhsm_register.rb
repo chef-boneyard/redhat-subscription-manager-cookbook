@@ -22,14 +22,15 @@ module RhsmCookbook
 
     resource_name :rhsm_register
 
-    property :_name_unused,        kind_of: String, name_property: true
-    property :activation_key,      kind_of: [ String, Array ]
-    property :satellite_host,      kind_of: String
-    property :organization,        kind_of: String
-    property :environment,         kind_of: String
-    property :username,            kind_of: String
-    property :password,            kind_of: String
-    property :auto_attach,         kind_of: [ TrueClass, FalseClass ], default: false
+    property :_name_unused,          kind_of: String, name_property: true
+    property :activation_key,        kind_of: [ String, Array ]
+    property :satellite_host,        kind_of: String
+    property :organization,          kind_of: String
+    property :environment,           kind_of: String
+    property :username,              kind_of: String
+    property :password,              kind_of: String
+    property :auto_attach,           kind_of: [ TrueClass, FalseClass ], default: false
+    property :install_katello_agent, kind_of: [ TrueClass, FalseClass ], default: true
 
     action :register do
       remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
@@ -58,6 +59,7 @@ module RhsmCookbook
 
       yum_package 'katello-agent' do
         action :install
+        only_if { install_katello_agent }
       end
     end
 

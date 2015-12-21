@@ -39,11 +39,11 @@ describe 'rhsm_test::unit' do
         allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return('sathost')
       end
 
-      it 'fetches the katello RPM' do
+      it 'fetches the katello cert and config RPM' do
         expect(chef_run).to create_remote_file('/tmp/chefspec/katello-package.rpm')
       end
 
-      it 'installs the katello package' do
+      it 'installs the katello cert and config RPM' do
         expect(remote_file).to notify('yum_package[katello-ca-consumer-latest]').to(:install)
       end
     end
@@ -71,12 +71,21 @@ describe 'rhsm_test::unit' do
       end
     end
 
-    it 'deletes the katello RPM file' do
+    it 'deletes the katello cert and config RPM file' do
       expect(chef_run).to delete_file('/tmp/chefspec/katello-package.rpm')
     end
 
-    it 'installs the katello-agent package' do
-      expect(chef_run).to install_yum_package('katello-agent')
+    context 'when install_katello_agent is false' do
+      it 'does not install the katello-agent' do
+        allow_any_instance_of(Chef::Resource).to receive(:install_katello_agent).and_return(false)
+        expect(chef_run).to_not install_yum_package('katello-agent')
+      end
+    end
+
+    context 'when install_katello_agent is true (default)' do
+      it 'installs the katello-agent package' do
+        expect(chef_run).to install_yum_package('katello-agent')
+      end
     end
 
     it 'converges successfully' do

@@ -1,9 +1,13 @@
 Metrics/AbcSize:
   Max: 30
+Metrics/CyclomaticComplexity:
+  Max: 10
 Metrics/LineLength:
   Max: 150
 Metrics/MethodLength:
   Max: 30
+Metrics/PerceivedComplexity:
+  Max: 10
 Style/Documentation:
   Enabled: false
 Style/SignalException:
