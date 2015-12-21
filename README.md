@@ -61,6 +61,7 @@ with RHSM or your local Satellite server.
 * **password**: password to use when registering. Not applicable if using an activation key. If specified, username and environment are also required.
 * **environment**: environment to use when registering, required when using username and password
 * **auto_attach**: if true, RHSM will attempt to automatically attach the host to applicable subscriptions. It is generally better to use an activation key with the subscriptions pre-defined.
+* **install_katello_agent**: if true, the `katello-agent` RPM will be installed. Defaults to `true`
 
 #### Examples
 
