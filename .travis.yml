@@ -7,6 +7,10 @@ addons:
     packages:
       - chefdk
 
+branches:
+  only:
+    - master
+
 services: docker
 
 # Don't `bundle install`
