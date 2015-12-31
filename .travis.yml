@@ -7,14 +7,14 @@ addons:
     packages:
       - chefdk
 
-branches:
-  only:
-    - master
+services: docker
 
 # Don't `bundle install`
 install: echo "skip bundle install"
 
 before_script:
+  - ls -ld /opt/*
+  - dpkg-query -L chefdk 
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
   - /opt/chefdk/embedded/bin/chef gem install chef-sugar
 script:
