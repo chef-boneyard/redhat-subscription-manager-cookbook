@@ -26,8 +26,8 @@ module RhsmCookbook
 
     action :install do
       validate_errata_level!(errata_level)
-        if node['platform_version'].to_i == 6
-          yum_package 'yum-plugin-security' do
+      if node['platform_version'].to_i == 6
+        yum_package 'yum-plugin-security' do
           action :install
         end
       end
