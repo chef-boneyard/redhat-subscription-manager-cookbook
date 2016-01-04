@@ -26,10 +26,9 @@ module RhsmCookbook
 
     action :install do
       validate_errata_level!(errata_level)
-      if node['platform_version'].to_i == 6
-        yum_package 'yum-plugin-security' do
-          action :install
-        end
+      yum_package 'yum-plugin-security' do
+        action :install
+        only_if { node['platform_version'].to_i == 6 }
       end
       execute "Install any #{errata_level} errata" do
         command "yum update --sec-severity=#{errata_level.capitalize} -y"
