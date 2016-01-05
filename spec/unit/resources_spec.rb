@@ -200,9 +200,25 @@ describe 'rhsm_test::unit' do
 
   context 'when the host is rhel6' do
     let(:chef_run) do
-      it 'installs the yum-plugin-security package' do
-        expect(chef_run).to install_yum_package('yum-plugin-security')
-      end
+      ChefSpec::ServerRunner.new(
+        platform: 'redhat', version: '6.1',
+        step_into: 'rhsm_errata_level'
+      ).converge(described_recipe)
+    end
+    it 'installs the yum-plugin-security package' do
+      expect(chef_run).to install_yum_package('yum-plugin-security')
+    end
+  end
+
+  context 'when the host is rhel7' do
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new(
+        platform: 'redhat', version: '7.1',
+        step_into: 'rhsm_errata_level'
+      ).converge(described_recipe)
+    end
+    it 'doesnt install the yum-plugin-security package' do
+      expect(chef_run).to_not install_yum_package('yum-plugin-security')
     end
   end
 
