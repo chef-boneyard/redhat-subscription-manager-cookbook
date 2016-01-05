@@ -198,6 +198,14 @@ describe 'rhsm_test::unit' do
     end
   end
 
+  context 'when the host is rhel6' do
+    let(:chef_run) do
+      it 'installs the yum-plugin-security package' do
+        expect(chef_run).to install_yum_package('yum-plugin-security')
+      end
+    end
+  end
+
   context 'rhsm_errata_level' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(
