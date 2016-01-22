@@ -26,7 +26,7 @@ module RhsmCookbook
 
         command << activation_keys.map { |key| "--activationkey=#{key}" }
         command << "--org=#{organization}"
-      elsif username && password
+      elsif username && password # rubocop:disable Style/GuardClause
         raise 'Unable to register - must specify environment when using username/password' if environment.nil?
 
         command << "--username=#{username}"
