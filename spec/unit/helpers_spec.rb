@@ -60,14 +60,35 @@ describe 'RhsmCookbook::RhsmHelpers' do
       end
 
       context 'when environment does not exist' do
-        it 'raises an exception' do
-          allow(resource).to receive(:environment).and_return(nil)
-          expect { resource.register_command }.to raise_error(RuntimeError)
+        context 'when registering to a satellite server' do
+          it 'raises an exception' do
+            allow(resource).to receive(:using_satellite_host?).and_return(true)
+            allow(resource).to receive(:environment).and_return(nil)
+            expect { resource.register_command }.to raise_error(RuntimeError)
+          end
+        end
+
+        context 'when registering to RHSM proper' do
+          before do
+            allow(resource).to receive(:using_satellite_host?).and_return(false)
+            allow(resource).to receive(:environment).and_return(nil)
+          end
+
+          it 'does not raise an exception' do
+            expect { resource.register_command }.not_to raise_error
+          end
+
+          it 'returns a command containing the username and password and no environment' do
+            allow(resource).to receive(:environment).and_return('myenv')
+            expect(resource.register_command).to match('--username=myuser --password=mypass')
+            expect(resource.register_command).not_to match('--environment')
+          end
         end
       end
 
       context 'when an environment exists' do
         it 'returns a command containing the username, password, and environment' do
+          allow(resource).to receive(:using_satellite_host?).and_return(true)
           allow(resource).to receive(:environment).and_return('myenv')
           expect(resource.register_command).to match('--username=myuser --password=mypass --environment=myenv')
         end
