@@ -1,5 +1,8 @@
 # redhat_subscription_manager cookbook
 
+## v0.3.1 (2016-01-25)
+* [pr#11](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/11) Correct use of environment flag with RHSM proper, and properly escape shell strings.
+
 ## v0.3.0 (2016-01-22)
 * [pr#6](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/6) Install yum-plugin-security on RHEL6 to support the rhsm_errata_level resource
 
