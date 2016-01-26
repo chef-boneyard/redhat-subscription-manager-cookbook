@@ -16,28 +16,34 @@
 # limitations under the License.
 #
 
+require 'shellwords'
+
 module RhsmCookbook
   module RhsmHelpers
-    def register_command
+    def register_command # rubocop:disable Metrics/AbcSize
       command = %w(subscription-manager register)
 
       if !activation_keys.empty?
         raise 'Unable to register - must specify organization when using activation keys' if organization.nil?
 
-        command << activation_keys.map { |key| "--activationkey=#{key}" }
-        command << "--org=#{organization}"
+        command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
+        command << "--org=#{Shellwords.shellescape(organization)}"
       elsif username && password
-        raise 'Unable to register - must specify environment when using username/password' if environment.nil?
+        raise 'Unable to register - must specify environment when using username/password' if environment.nil? && using_satellite_host?
 
-        command << "--username=#{username}"
-        command << "--password=#{password}"
-        command << "--environment=#{environment}"
+        command << "--username=#{Shellwords.shellescape(username)}"
+        command << "--password=#{Shellwords.shellescape(password)}"
+        command << "--environment=#{Shellwords.shellescape(environment)}" if using_satellite_host?
       else
         raise 'Unable to create register command - must specify activation_key or username/password'
       end
 
       command << '--auto-attach' if auto_attach
       command.join(' ')
+    end
+
+    def using_satellite_host?
+      !satellite_host.nil?
     end
 
     def activation_keys
