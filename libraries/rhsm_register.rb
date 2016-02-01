@@ -31,6 +31,7 @@ module RhsmCookbook
     property :password,              kind_of: String
     property :auto_attach,           kind_of: [ TrueClass, FalseClass ], default: false
     property :install_katello_agent, kind_of: [ TrueClass, FalseClass ], default: true
+    property :sensitive,             kind_of: [ TrueClass, FalseClass ], default: true
 
     action :register do
       remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
@@ -51,7 +52,7 @@ module RhsmCookbook
       end
 
       execute 'Register to RHSM' do
-        sensitive true
+        sensitive new_resource.sensitive
         command register_command
         action :run
         not_if { registered_with_rhsm? }
