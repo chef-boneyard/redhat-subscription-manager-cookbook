@@ -62,6 +62,7 @@ with RHSM or your local Satellite server.
 * **environment**: environment to use when registering, required when using username and password
 * **auto_attach**: if true, RHSM will attempt to automatically attach the host to applicable subscriptions. It is generally better to use an activation key with the subscriptions pre-defined.
 * **install_katello_agent**: if true, the `katello-agent` RPM will be installed. Defaults to `true`
+* **sensitive**: if true, the execution of the registration command will be flagged as "sensitive," prohibiting the command, STDOUT, and STDERR from being displayed in the Chef log output. This command could contain usernames, passwords, and activation keys, so unlike other Chef resources, this defaults to `true`. However, you may set it to `false` to get additional output if your registration attempts are failing.
 
 #### Examples
 

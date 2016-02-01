@@ -23,23 +23,27 @@ module RhsmCookbook
     def register_command # rubocop:disable Metrics/AbcSize
       command = %w(subscription-manager register)
 
-      if !activation_keys.empty?
+      unless activation_keys.empty?
         raise 'Unable to register - must specify organization when using activation keys' if organization.nil?
 
         command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
         command << "--org=#{Shellwords.shellescape(organization)}"
-      elsif username && password
+
+        return command.join(' ')
+      end
+
+      if username && password
         raise 'Unable to register - must specify environment when using username/password' if environment.nil? && using_satellite_host?
 
         command << "--username=#{Shellwords.shellescape(username)}"
         command << "--password=#{Shellwords.shellescape(password)}"
         command << "--environment=#{Shellwords.shellescape(environment)}" if using_satellite_host?
-      else
-        raise 'Unable to create register command - must specify activation_key or username/password'
+        command << '--auto-attach' if auto_attach
+
+        return command.join(' ')
       end
 
-      command << '--auto-attach' if auto_attach
-      command.join(' ')
+      raise 'Unable to create register command - must specify activation_key or username/password'
     end
 
     def using_satellite_host?

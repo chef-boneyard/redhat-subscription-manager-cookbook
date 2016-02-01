@@ -51,12 +51,47 @@ describe 'RhsmCookbook::RhsmHelpers' do
           expect(resource.register_command).to match('--activationkey=key1 --activationkey=key2 --org=myorg')
         end
       end
+
+      context 'when auto_attach is true' do
+        it 'does not return a command with --auto-attach since it is not supported with activation keys' do
+          allow(resource).to receive(:organization).and_return('myorg')
+          allow(resource).to receive(:auto_attach).and_return(true)
+
+          expect(resource.register_command).not_to match('--auto-attach')
+        end
+      end
     end
 
     context 'when username and password exist' do
       before do
         allow(resource).to receive(:username).and_return('myuser')
         allow(resource).to receive(:password).and_return('mypass')
+        allow(resource).to receive(:environment)
+        allow(resource).to receive(:using_satellite_host?)
+      end
+
+      context 'when auto_attach is true' do
+        it 'returns a command containing --auto-attach' do
+          allow(resource).to receive(:auto_attach).and_return(true)
+
+          expect(resource.register_command).to match('--auto-attach')
+        end
+      end
+
+      context 'when auto_attach is false' do
+        it 'returns a command that does not contain --auto-attach' do
+          allow(resource).to receive(:auto_attach).and_return(false)
+
+          expect(resource.register_command).not_to match('--auto-attach')
+        end
+      end
+
+      context 'when auto_attach is nil' do
+        it 'returns a command that does not contain --auto-attach' do
+          allow(resource).to receive(:auto_attach).and_return(nil)
+
+          expect(resource.register_command).not_to match('--auto-attach')
+        end
       end
 
       context 'when environment does not exist' do
@@ -102,36 +137,6 @@ describe 'RhsmCookbook::RhsmHelpers' do
         allow(resource).to receive(:password).and_return(nil)
 
         expect { resource.register_command }.to raise_error(RuntimeError)
-      end
-    end
-
-    context 'when auto_attach is true' do
-      it 'returns a command containing --auto-attach' do
-        allow(resource).to receive(:activation_keys).and_return(%w(key1))
-        allow(resource).to receive(:organization).and_return('myorg')
-        allow(resource).to receive(:auto_attach).and_return(true)
-
-        expect(resource.register_command).to match('--auto-attach')
-      end
-    end
-
-    context 'when auto_attach is false' do
-      it 'returns a command that does not contain --auto-attach' do
-        allow(resource).to receive(:activation_keys).and_return(%w(key1))
-        allow(resource).to receive(:organization).and_return('myorg')
-        allow(resource).to receive(:auto_attach).and_return(false)
-
-        expect(resource.register_command).not_to match('--auto-attach')
-      end
-    end
-
-    context 'when auto_attach is nil' do
-      it 'returns a command that does not contain --auto-attach' do
-        allow(resource).to receive(:activation_keys).and_return(%w(key1))
-        allow(resource).to receive(:organization).and_return('myorg')
-        allow(resource).to receive(:auto_attach).and_return(nil)
-
-        expect(resource.register_command).not_to match('--auto-attach')
       end
     end
   end
