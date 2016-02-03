@@ -1,28 +1,16 @@
-sudo: required
-
-addons:
-  apt:
-    sources:
-      - chef-stable-precise
-    packages:
-      - chefdk
-
+language: ruby
+cache: bundler
+sudo: false
+rvm:
+- 2.0.0
+- 2.1
+- 2.2
 branches:
   only:
-    - master
-
-services: docker
-
-# Don't `bundle install`
-install: echo "skip bundle install"
-
-before_script:
-  - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-  - /opt/chefdk/embedded/bin/chef gem install chef-sugar
-script:
-  - /opt/chefdk/embedded/bin/chef --version
-  - /opt/chefdk/embedded/bin/rubocop --version
-  - /opt/chefdk/embedded/bin/rubocop
-  - /opt/chefdk/embedded/bin/foodcritic --version
-  - /opt/chefdk/embedded/bin/foodcritic . --exclude spec
-  - /opt/chefdk/embedded/bin/rspec spec
+  - master
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    rooms:
+      secure: o6ySwDOu3t9h1kqgqNOTtv+8p3Biel4+neBVc1rjpBcaijLRbkxyhoUCumoGWTx//e/sqdrSxqftjSmjCF2F9p2AwLXiTyuZPs7drjd2K72FmZZTnwUR+T5Ne6QmQqF1PEaE/mxTq4+9mAelOD7Lv4z6kJW6nwP//KANkceE0hGmy3MDyz15RC6uVbWrqstXN3v6rPBRFUVWCwTR4PIPEFNYlaxesNgXyyABpIY9mreEkXwH+BOUkmVWHBheJ0xjdGQTEGjh2BvZ0gxVFmor69ZQUzkvMRuYzaY5rPMb4tvD+lMvq6DLbgISXjOu0ilfiJxu7ICAna2+8kwqBBCwjiS+39EiMuT4x7yz3ymN+ZtiZTcAH3y7EZI254aXN06Y5J8xsVjdo8ILxB7UKvONRhRqkzm3JAum9/cHYh1AfJLgb6fFq+f03G59eGPzC1XdMwMutFlJJLxWEZPiUbt2/PqMINLqfxQ5q8gIWysiTc33NlTh1IKc4r/QiaQNSey9oqho+gk7azaZarm26EDCLQWycO4+IbUJ7lvScRpEXjSQuPqSr5+xNCyKe5HYQagm2zG9kwT1Uhiaiy6QeAQ/+uB6CHZgew0XMTu7EksHd6rgN3rM1jeNNs5J5b8lHtaZKnGZBA+ot769zijkflEWa5eNxjDR6A/q3+B7Y9rR95E=
