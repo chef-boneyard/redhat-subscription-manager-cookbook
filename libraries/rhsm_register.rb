@@ -51,7 +51,7 @@ module RhsmCookbook
         action :delete
       end
 
-      execute 'Register to RHSM' do
+      execute 'Register to RHSM' do # ~FC009
         sensitive new_resource.sensitive
         command register_command
         action :run
