@@ -69,7 +69,8 @@ describe 'rhsm_test::unit' do
     end
     describe 'deleting the fetched package' do
       it 'deletes the katello cert and config RPM file' do
-      expect(chef_run).to delete_file('/tmp/chefspec/katello-package.rpm')
+        expect(chef_run).to delete_file('/tmp/chefspec/katello-package.rpm')
+      end
     end
     describe 'registering to RHSM' do
       context 'when host is not registered' do
