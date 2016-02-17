@@ -19,7 +19,7 @@
 require 'spec_helper'
 
 describe 'rhsm_test::unit' do
-  context 'rhsm_register' do
+  describe 'rhsm_register' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(
         file_cache_path: '/tmp/chefspec',
@@ -27,69 +27,98 @@ describe 'rhsm_test::unit' do
       ).converge(described_recipe)
     end
 
-    before(:each) do
-      allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(true)
+    before do
+      allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?)
     end
 
-    context 'when satellite_host is provided and host is not registered' do
+    describe 'fetching the cert RPM' do
       let(:remote_file) { chef_run.remote_file('/tmp/chefspec/katello-package.rpm') }
 
-      before do
-        allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(false)
-        allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return('sathost')
+      context 'when host is not registered' do
+        before do
+          allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(false)
+        end
+
+        context 'when satellite host is nil' do
+          it 'does not fetch the katello RPM' do
+            allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return(nil)
+            expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
+          end
+        end
+
+        context 'when satellite host is provided' do
+          before do
+            allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return('mysatellite')
+          end
+
+          context 'when the cert RPM is not yet installed' do
+            before do
+              allow_any_instance_of(Chef::Resource).to receive(:katello_cert_rpm_installed?).and_return(false)
+            end
+
+            it 'fetches the cert' do
+              expect(chef_run).to create_remote_file('/tmp/chefspec/katello-package.rpm')
+            end
+
+            it 'installs the cert' do
+              expect(remote_file).to notify('yum_package[katello-ca-consumer-latest]').to(:install)
+            end
+          end
+
+          context 'when the cert RPM is already installed' do
+            it 'does not fetch and install the cert' do
+              allow_any_instance_of(Chef::Resource).to receive(:katello_cert_rpm_installed?).and_return(true)
+              expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
+            end
+          end
+        end
       end
 
-      it 'fetches the katello cert and config RPM' do
-        expect(chef_run).to create_remote_file('/tmp/chefspec/katello-package.rpm')
-      end
-
-      it 'installs the katello cert and config RPM' do
-        expect(remote_file).to notify('yum_package[katello-ca-consumer-latest]').to(:install)
-      end
-    end
-
-    context 'when satellite_host is nil' do
-      it 'does not fetch the katello RPM' do
-        allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return(nil)
-        expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
-      end
-    end
-
-    context 'when host is registered' do
-      it 'does not fetch the katello RPM' do
-        allow_any_instance_of(Chef::Resource).to receive(:satellite_host).and_return('sathost')
-        allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(true)
-        expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
-      end
-    end
-
-    context 'when host is not registered' do
-      it 'executes the register command' do
-        allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(false)
-        allow_any_instance_of(Chef::Resource).to receive(:register_command).and_return('register-command')
-        expect(chef_run).to run_execute('register-command')
-      end
-    end
-
-    it 'deletes the katello cert and config RPM file' do
-      expect(chef_run).to delete_file('/tmp/chefspec/katello-package.rpm')
-    end
-
-    context 'when install_katello_agent is false' do
-      it 'does not install the katello-agent' do
-        allow_any_instance_of(Chef::Resource).to receive(:install_katello_agent).and_return(false)
-        expect(chef_run).to_not install_yum_package('katello-agent')
-      end
-    end
-
-    context 'when install_katello_agent is true (default)' do
-      it 'installs the katello-agent package' do
-        expect(chef_run).to install_yum_package('katello-agent')
+      context 'when the host is registered' do
+        it 'does not fetch and install the cert' do
+          allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(true)
+          expect(chef_run).not_to create_remote_file('/tmp/chefspec/katello-package.rpm')
+        end
       end
     end
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
+    describe 'deleting the fetched package' do
+      it 'deletes the katello cert and config RPM file' do
+        expect(chef_run).to delete_file('/tmp/chefspec/katello-package.rpm')
+      end
+    end
+
+    describe 'registering to RHSM' do
+      context 'when host is not registered' do
+        it 'registers the host' do
+          allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(false)
+          allow_any_instance_of(Chef::Resource).to receive(:register_command).and_return('register-command')
+          expect(chef_run).to run_execute('register-command')
+        end
+      end
+
+      context 'when host is registered' do
+        it 'does not register the host' do
+          allow_any_instance_of(Chef::Resource).to receive(:registered_with_rhsm?).and_return(true)
+          allow_any_instance_of(Chef::Resource).to receive(:register_command).and_return('register-command')
+          expect(chef_run).not_to run_execute('register-command')
+        end
+      end
+    end
+
+    describe 'installing the katello agent' do
+      context 'when installation of the agent is enabled' do
+        it 'installs the agent' do
+          expect(chef_run).to install_yum_package('katello-agent')
+        end
+      end
+
+      context 'when installation of the agent is disabled' do
+        it 'does not install the agent' do
+          allow_any_instance_of(Chef::Resource).to receive(:install_katello_agent).and_return(false)
+          expect(chef_run).to_not install_yum_package('katello-agent')
+        end
+      end
     end
   end
 

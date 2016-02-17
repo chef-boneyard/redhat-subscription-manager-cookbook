@@ -38,7 +38,7 @@ module RhsmCookbook
         source "http://#{satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
         action :create
         notifies :install, 'yum_package[katello-ca-consumer-latest]', :immediately
-        not_if { satellite_host.nil? || registered_with_rhsm? }
+        not_if { satellite_host.nil? || registered_with_rhsm? || katello_cert_rpm_installed? }
       end
 
       yum_package 'katello-ca-consumer-latest' do
