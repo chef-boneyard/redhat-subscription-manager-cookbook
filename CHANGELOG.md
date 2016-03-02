@@ -1,5 +1,8 @@
 # redhat_subscription_manager cookbook
 
+## v0.5.0 (2016-03-02)
+* [pr#18](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/18) Adding custom matchers for ChefSpec.
+
 ## v0.4.0 (2016-02-17)
 * [pr#17](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/17) Don't pull or install a katello cert if it is already installed.
 
