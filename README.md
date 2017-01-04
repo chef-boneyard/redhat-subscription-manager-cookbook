@@ -1,4 +1,6 @@
+
 [![Build Status](https://img.shields.io/travis/chef-partners/redhat-subscription-manager-cookbook)](https://travis-ci.org/chef-partners/redhat-subscription-manager-cookbook)
+
 redhat_subscription_manager cookbook
 ====================================
 
