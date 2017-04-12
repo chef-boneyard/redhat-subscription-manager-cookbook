@@ -53,7 +53,7 @@ module RhsmCookbook
         only_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/katello-package.rpm") }
       end
 
-      execute 'Register to RHSM' do # ~FC009
+      execute 'Register to RHSM' do
         sensitive new_resource.sensitive
         command register_command
         action :run
