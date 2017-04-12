@@ -20,7 +20,7 @@ require 'shellwords'
 
 module RhsmCookbook
   module RhsmHelpers
-    def register_command # rubocop:disable Metrics/AbcSize
+    def register_command
       command = %w(subscription-manager register)
 
       unless activation_keys.empty?
