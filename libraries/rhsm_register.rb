@@ -32,6 +32,7 @@ module RhsmCookbook
     property :auto_attach,           kind_of: [ TrueClass, FalseClass ], default: false
     property :install_katello_agent, kind_of: [ TrueClass, FalseClass ], default: true
     property :sensitive,             kind_of: [ TrueClass, FalseClass ], default: true
+    property :force,                 kind_of: [ TrueClass, FalseClass ], default: false
 
     action :register do
       remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do

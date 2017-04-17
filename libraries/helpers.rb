@@ -28,6 +28,7 @@ module RhsmCookbook
 
         command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
         command << "--org=#{Shellwords.shellescape(organization)}"
+        command << "--force" if force
 
         return command.join(' ')
       end
@@ -39,6 +40,7 @@ module RhsmCookbook
         command << "--password=#{Shellwords.shellescape(password)}"
         command << "--environment=#{Shellwords.shellescape(environment)}" if using_satellite_host?
         command << '--auto-attach' if auto_attach
+        command << "--force" if force
 
         return command.join(' ')
       end
