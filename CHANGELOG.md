@@ -1,20 +1,71 @@
-# redhat_subscription_manager cookbook
+# Change Log
 
-## v0.5.0 (2016-03-02)
-* [pr#18](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/18) Adding custom matchers for ChefSpec.
+## [v0.6.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.6.0)
 
-## v0.4.0 (2016-02-17)
-* [pr#17](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/17) Don't pull or install a katello cert if it is already installed.
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.5.0...v0.6.0)
 
-## v0.3.1 (2016-01-25)
-* [pr#11](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/11) Correct use of environment flag with RHSM proper, and properly escape shell strings.
+**Merged pull requests:**
 
-## v0.3.0 (2016-01-22)
-* [pr#6](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/6) Install yum-plugin-security on RHEL6 to support the rhsm_errata_level resource
+- add force registration option [\#24](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/24) ([bcg62](https://github.com/bcg62))
 
-## v0.2.0 (2015-12-21)
-* [pr#4](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/4) Make installation of the katello agent optional
+## [v0.5.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.5.0) (2016-03-02)
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.4.0...v0.5.0)
 
-## v0.1.0 (2015-11-24)
-* Initial release
+**Closed issues:**
 
+- Applying critical errata sometimes fails [\#16](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/16)
+
+**Merged pull requests:**
+
+- Write chefspec matchers. [\#18](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/18) ([erinn](https://github.com/erinn))
+
+## [v0.4.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.4.0) (2016-02-17)
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.3.0...v0.4.0)
+
+**Closed issues:**
+
+- Error running in RHEL7 [\#12](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/12)
+- When registering with username/password - passwords w/ '&' in them fail [\#10](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/10)
+- When registering to Redhat's RHSM with u/p - environment not supported [\#9](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/9)
+
+**Merged pull requests:**
+
+- Don't pull and install a katello cert if it's already installed. [\#17](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/17) ([adamleff](https://github.com/adamleff))
+- fixing travis notifications [\#15](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/15) ([adamleff](https://github.com/adamleff))
+- Fixing auto-attach scope, and making sensitivity configurable [\#14](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/14) ([adamleff](https://github.com/adamleff))
+- Correcting environment parameter usage during registration [\#11](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/11) ([adamleff](https://github.com/adamleff))
+
+## [v0.3.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.3.0) (2016-01-22)
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.2.0...v0.3.0)
+
+**Closed issues:**
+
+- Errata Install Doesn't Work On RHEL6 [\#7](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/7)
+- Require yum-plugin-security to be installed [\#5](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/5)
+
+## [v0.2.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.2.0) (2015-12-21)
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.1.1...v0.2.0)
+
+**Closed issues:**
+
+- Guard katello-agent install? [\#3](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/3)
+
+**Merged pull requests:**
+
+- Adding ability to not install katello-agent [\#4](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/4) ([adamleff](https://github.com/adamleff))
+
+## [v0.1.1](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.1.1) (2015-11-24)
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.1.0...v0.1.1)
+
+**Merged pull requests:**
+
+- Using file\_cache\_path instead of /tmp to satisfy FC013 [\#2](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/2) ([adamleff](https://github.com/adamleff))
+
+## [v0.1.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.1.0) (2015-11-24)
+**Merged pull requests:**
+
+- initial release [\#1](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/1) ([adamleff](https://github.com/adamleff))
+
+
+
+\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
