@@ -39,6 +39,7 @@ module RhsmCookbook
         command << "--password=#{Shellwords.shellescape(password)}"
         command << "--environment=#{Shellwords.shellescape(environment)}" if using_satellite_host?
         command << '--auto-attach' if auto_attach
+        command << '--force' if force
 
         return command.join(' ')
       end

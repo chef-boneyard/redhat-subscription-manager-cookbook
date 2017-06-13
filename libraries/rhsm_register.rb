@@ -30,6 +30,7 @@ module RhsmCookbook
     property :username,              kind_of: String
     property :password,              kind_of: String
     property :auto_attach,           kind_of: [ TrueClass, FalseClass ], default: false
+    property :force,                 kind_of: [ TrueClass, FalseClass ], default: false
     property :install_katello_agent, kind_of: [ TrueClass, FalseClass ], default: true
     property :sensitive,             kind_of: [ TrueClass, FalseClass ], default: true
 
@@ -57,7 +58,7 @@ module RhsmCookbook
         sensitive new_resource.sensitive
         command register_command
         action :run
-        not_if { registered_with_rhsm? }
+        not_if { registered_with_rhsm? && 'subscription-manager identity' }
       end
 
       yum_package 'katello-agent' do
