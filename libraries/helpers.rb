@@ -57,7 +57,7 @@ module RhsmCookbook
     end
 
     def registered_with_rhsm?
-      cmd = Mixlib::ShellOut.new('subscription-manager status')
+      cmd = Mixlib::ShellOut.new('subscription-manager status', env: { LANG: node['rhsm']['lang'] })
       cmd.run_command
       !cmd.stdout.match(/Overall Status: Unknown/)
     end
@@ -69,13 +69,13 @@ module RhsmCookbook
     end
 
     def subscription_attached?(subscription)
-      cmd = Mixlib::ShellOut.new("subscription-manager list --consumed | grep #{subscription}")
+      cmd = Mixlib::ShellOut.new("subscription-manager list --consumed | grep #{subscription}", env: { LANG: node['rhsm']['lang'] })
       cmd.run_command
       !cmd.stdout.match(/Pool ID:\s+#{subscription}$/).nil?
     end
 
     def repo_enabled?(repo)
-      cmd = Mixlib::ShellOut.new('subscription-manager repos --list-enabled')
+      cmd = Mixlib::ShellOut.new('subscription-manager repos --list-enabled', env: { LANG: node['rhsm']['lang'] })
       cmd.run_command
       !cmd.stdout.match(/Repo ID:\s+#{repo}$/).nil?
     end
@@ -90,7 +90,7 @@ module RhsmCookbook
       pool = nil
       serial = nil
 
-      cmd = Mixlib::ShellOut.new('subscription-manager list --consumed')
+      cmd = Mixlib::ShellOut.new('subscription-manager list --consumed', env: { LANG: node['rhsm']['lang'] })
       cmd.run_command
       cmd.stdout.lines.each do |line|
         line.strip!
