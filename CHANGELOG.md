@@ -1,7 +1,30 @@
 # Change Log
 
-## [v0.6.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.6.0)
+## [v0.7.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.7.0)
 
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.6.1...v0.7.0)
+
+**Closed issues:**
+
+- Registration fails in non-English environments [\#32](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/32)
+
+**Merged pull requests:**
+
+- override languages in environment when running commands [\#33](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/33) ([kleini](https://github.com/kleini))
+
+## [v0.6.1](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.6.1) (2017-10-24)
+[Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.6.0...v0.6.1)
+
+**Closed issues:**
+
+- Expose "name" attribute for "--name" argument of subscription-manager [\#26](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/26)
+- Kattello Agent install fails because the repo isn't registered yet [\#25](https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues/25)
+
+**Merged pull requests:**
+
+- Corrected deprecation error on satellite\_host property [\#31](https://github.com/chef-partners/redhat-subscription-manager-cookbook/pull/31) ([roberto-mardeni](https://github.com/roberto-mardeni))
+
+## [v0.6.0](https://github.com/chef-partners/redhat-subscription-manager-cookbook/tree/v0.6.0) (2017-04-24)
 [Full Changelog](https://github.com/chef-partners/redhat-subscription-manager-cookbook/compare/v0.5.0...v0.6.0)
 
 **Merged pull requests:**
