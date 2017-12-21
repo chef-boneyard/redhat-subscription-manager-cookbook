@@ -33,7 +33,7 @@ module RhsmCookbook
     end
 
     action :disable do
-      execute "Enable repository #{repo_name}" do
+      execute "Disable repository #{repo_name}" do
         command "subscription-manager repos --disable=#{repo_name}"
         action :run
         only_if { repo_enabled?(repo_name) }
