@@ -11,6 +11,7 @@ driver:
 
 provisioner:
   name: chef_zero
+  deprecations_as_errors: true
 
 transport:
   username: ec2-user
