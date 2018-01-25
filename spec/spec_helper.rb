@@ -18,3 +18,10 @@
 
 require 'chefspec'
 require 'chefspec/berkshelf'
+
+RSpec.configure do |config|
+  config.formatter = :documentation
+  config.color = true
+  config.platform = 'redhat'
+  config.version = '7.4'
+end
