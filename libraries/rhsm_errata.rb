@@ -25,8 +25,8 @@ module RhsmCookbook
     property :errata_id, kind_of: String, name_property: true
 
     action :install do
-      execute "Install errata packages for #{errata_id}" do
-        command "yum update --advisory #{errata_id} -y"
+      execute "Install errata packages for #{new_resource.errata_id}" do
+        command "yum update --advisory #{new_resource.errata_id} -y"
         action :run
       end
     end
