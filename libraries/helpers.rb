@@ -33,14 +33,14 @@ module RhsmCookbook
         return command.join(' ')
       end
 
-      if username && password
-        raise 'Unable to register - must specify environment when using username/password' if environment.nil? && using_satellite_host?
+      if new_resource.username && new_resource.password
+        raise 'Unable to register - must specify environment when using username/password' if new_resource.environment.nil? && using_satellite_host?
 
-        command << "--username=#{Shellwords.shellescape(username)}"
-        command << "--password=#{Shellwords.shellescape(password)}"
-        command << "--environment=#{Shellwords.shellescape(environment)}" if using_satellite_host?
-        command << '--auto-attach' if auto_attach
-        command << '--force' if force
+        command << "--username=#{Shellwords.shellescape(new_resource.username)}"
+        command << "--password=#{Shellwords.shellescape(new_resource.password)}"
+        command << "--environment=#{Shellwords.shellescape(new_resource.nvironment)}" if using_satellite_host?
+        command << '--auto-attach' if new_resource.auto_attach
+        command << '--force' if new_resource.force
 
         return command.join(' ')
       end
@@ -49,11 +49,11 @@ module RhsmCookbook
     end
 
     def using_satellite_host?
-      !satellite_host.nil?
+      !new_resource.satellite_host.nil?
     end
 
     def activation_keys
-      Array(activation_key)
+      Array(new_resource.activation_key)
     end
 
     def registered_with_rhsm?
