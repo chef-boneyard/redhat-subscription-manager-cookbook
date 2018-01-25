@@ -16,11 +16,12 @@
 # limitations under the License.
 #
 
-require 'serverspec'
+describe 'rhsm-test::default' do
+  it 'registered with Red Hat Satellite' do
+    expect(command('subscription-manager').stdout).not_to match(/Overall Status: Unknown/)
+  end
 
-if (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM).nil?
-  set :backend, :exec
-else
-  set :backend, :cmd
-  set :os, family: 'windows'
+  it 'installed all Low-level errata' do
+    expect(command('yum list-sec').stdout).not_to contain('Low/Sec.')
+  end
 end
