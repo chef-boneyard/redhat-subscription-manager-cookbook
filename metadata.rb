@@ -7,4 +7,5 @@ long_description 'Provides custom resources to interact with Red Hat Subscriptio
 version '0.7.0'
 source_url 'https://github.com/chef-partners/redhat-subscription-manager-cookbook'
 issues_url 'https://github.com/chef-partners/redhat-subscription-manager-cookbook/issues'
+supports 'redhat'
 chef_version '>= 12.7' if respond_to?(:chef_version)
