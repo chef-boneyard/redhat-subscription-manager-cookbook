@@ -28,7 +28,7 @@ module RhsmCookbook
 
         command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
         command << "--org=#{Shellwords.shellescape(new_resource.organization)}"
-        command << '--force' if force
+        command << '--force' if new_resource.force
 
         return command.join(' ')
       end

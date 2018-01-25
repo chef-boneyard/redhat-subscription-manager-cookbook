@@ -23,14 +23,14 @@ module RhsmCookbook
     property :errata_level, String, name_property: true
 
     action :install do
-      validate_errata_level!(errata_level)
+      validate_errata_level!(new_resource.errata_level)
       yum_package 'yum-plugin-security' do
         action :install
         only_if { node['platform_version'].to_i == 6 }
       end
 
-      execute "Install any #{errata_level} errata" do
-        command "yum update --sec-severity=#{errata_level.capitalize} -y"
+      execute "Install any #{new_resource.errata_level} errata" do
+        command "yum update --sec-severity=#{new_resource.errata_level.capitalize} -y"
         action :run
       end
     end
