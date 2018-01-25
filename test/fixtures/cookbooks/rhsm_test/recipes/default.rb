@@ -21,7 +21,6 @@
 rhsm_register 'myhost' do
   activation_key node['rhsm']['activation_key']
   organization node['rhsm']['organization']
-  satellite_host node['rhsm']['satellite_host']
 end
 
 rhsm_errata_level 'Low'

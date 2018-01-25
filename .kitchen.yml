@@ -17,5 +17,4 @@ suites:
     attributes:
       rhsm:
         activation_key: <%= ENV['rhsm_activation_key'] %>
-        satellite_host: <%= ENV['rhsm_satellite_host'] %>
         organization: <%= ENV['rhsm_organization'] %>
