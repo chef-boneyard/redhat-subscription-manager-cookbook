@@ -32,24 +32,26 @@ module RhsmCookbook
     property :force,                 [TrueClass, FalseClass], default: false
 
     action :register do
-      remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
-        source "http://#{new_resource.satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
-        action :create
-        notifies :install, 'yum_package[katello-ca-consumer-latest]', :immediately
-        not_if { new_resource.satellite_host.nil? || registered_with_rhsm? || katello_cert_rpm_installed? }
+      unless new_resource.satellite_host.nil? || registered_with_rhsm?
+        remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
+          source "http://#{new_resource.satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
+          action :create
+          notifies :install, 'yum_package[katello-ca-consumer-latest]', :immediately
+          not_if { katello_cert_rpm_installed? }
+        end
+
+        yum_package 'katello-ca-consumer-latest' do
+          options '--nogpgcheck'
+          source "#{Chef::Config[:file_cache_path]}/katello-package.rpm"
+          action :nothing
+        end
+
+        file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
+          action :delete
+        end
       end
 
-      yum_package 'katello-ca-consumer-latest' do
-        options '--nogpgcheck'
-        source "#{Chef::Config[:file_cache_path]}/katello-package.rpm"
-        action :nothing
-      end
-
-      file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
-        action :delete
-      end
-
-      execute 'Register to RHSM' do # ~FC009
+      execute 'Register to RHSM' do
         sensitive new_resource.sensitive
         command register_command
         action :run
