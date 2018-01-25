@@ -24,7 +24,7 @@ module RhsmCookbook
       command = %w(subscription-manager register)
 
       unless activation_keys.empty?
-        raise 'Unable to register - must specify organization when using activation keys' if organization.nil?
+        raise 'Unable to register - you must specify organization when using activation keys' if organization.nil?
 
         command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
         command << "--org=#{Shellwords.shellescape(organization)}"
@@ -34,7 +34,7 @@ module RhsmCookbook
       end
 
       if new_resource.username && new_resource.password
-        raise 'Unable to register - must specify environment when using username/password' if new_resource.environment.nil? && using_satellite_host?
+        raise 'Unable to register - you must specify environment when using username/password' if new_resource.environment.nil? && using_satellite_host?
 
         command << "--username=#{Shellwords.shellescape(new_resource.username)}"
         command << "--password=#{Shellwords.shellescape(new_resource.password)}"
@@ -45,7 +45,7 @@ module RhsmCookbook
         return command.join(' ')
       end
 
-      raise 'Unable to create register command - must specify activation_key or username/password'
+      raise 'Unable to create register command - you must specify activation_key or username/password'
     end
 
     def using_satellite_host?
