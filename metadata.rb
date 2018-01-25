@@ -1,7 +1,7 @@
 name 'redhat_subscription_manager'
 maintainer 'Chef Partner Engineering'
 maintainer_email 'partnereng@chef.io'
-license 'Apache 2.0'
+license 'Apache-2.0'
 description 'Provides custom resources to interact with Red Hat Subscription Manager (RHSM) and Red Hat Satellite'
 long_description 'Provides custom resources to interact with Red Hat Subscription Manager (RHSM) and Red Hat Satellite'
 version '0.7.0'
