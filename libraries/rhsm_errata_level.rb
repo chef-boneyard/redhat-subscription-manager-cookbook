@@ -22,7 +22,7 @@ module RhsmCookbook
 
     resource_name :rhsm_errata_level
 
-    property :errata_level, kind_of: String, name_property: true
+    property :errata_level, String, name_property: true
 
     action :install do
       validate_errata_level!(errata_level)

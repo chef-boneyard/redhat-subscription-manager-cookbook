@@ -22,7 +22,7 @@ module RhsmCookbook
 
     resource_name :rhsm_errata
 
-    property :errata_id, kind_of: String, name_property: true
+    property :errata_id, String, name_property: true
 
     action :install do
       execute "Install errata packages for #{new_resource.errata_id}" do

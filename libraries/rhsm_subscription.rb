@@ -22,7 +22,7 @@ module RhsmCookbook
 
     resource_name :rhsm_subscription
 
-    property :pool_id, kind_of: String, name_property: true
+    property :pool_id, String, name_property: true
 
     action :attach do
       execute "Attach subscription pool #{pool_id}" do

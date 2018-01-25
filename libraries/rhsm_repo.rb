@@ -22,7 +22,7 @@ module RhsmCookbook
 
     resource_name :rhsm_repo
 
-    property :repo_name, kind_of: String, name_property: true
+    property :repo_name, String, name_property: true
 
     action :enable do
       execute "Enable repository #{repo_name}" do
