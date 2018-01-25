@@ -24,3 +24,5 @@ rhsm_register 'myhost' do
 end
 
 rhsm_errata_level 'Low'
+
+rhsm_errata 'RHSA-2016:2972'
