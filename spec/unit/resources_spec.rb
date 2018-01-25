@@ -230,7 +230,7 @@ describe 'rhsm_test::unit' do
   context 'when the host is rhel6' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(
-        platform: 'redhat', version: '6.1',
+        platform: 'redhat', version: '6.9',
         step_into: 'rhsm_errata_level'
       ).converge(described_recipe)
     end
