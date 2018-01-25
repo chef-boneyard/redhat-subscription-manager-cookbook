@@ -31,7 +31,6 @@ module RhsmCookbook
     property :password,              String
     property :auto_attach,           [TrueClass, FalseClass], default: false
     property :install_katello_agent, [TrueClass, FalseClass], default: true
-    property :sensitive,             [TrueClass, FalseClass], default: true
     property :force,                 [TrueClass, FalseClass], default: false
 
     action :register do
