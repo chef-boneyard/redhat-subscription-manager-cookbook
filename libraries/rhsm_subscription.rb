@@ -17,7 +17,7 @@
 #
 
 module RhsmCookbook
-  class RhsmSubscription < ChefCompat::Resource
+  class RhsmSubscription < Chef::Resource
     include RhsmCookbook::RhsmHelpers
 
     resource_name :rhsm_subscription

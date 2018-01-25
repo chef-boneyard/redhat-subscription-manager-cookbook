@@ -17,7 +17,7 @@
 #
 
 module RhsmCookbook
-  class RhsmRegister < ChefCompat::Resource
+  class RhsmRegister < Chef::Resource
     include RhsmCookbook::RhsmHelpers
 
     resource_name :rhsm_register

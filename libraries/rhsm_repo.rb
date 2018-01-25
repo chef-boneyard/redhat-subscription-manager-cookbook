@@ -17,7 +17,7 @@
 #
 
 module RhsmCookbook
-  class RhsmRepo < ChefCompat::Resource
+  class RhsmRepo < Chef::Resource
     include RhsmCookbook::RhsmHelpers
 
     resource_name :rhsm_repo

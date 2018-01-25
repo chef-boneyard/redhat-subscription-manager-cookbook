@@ -17,7 +17,7 @@
 #
 
 module RhsmCookbook
-  class RhsmErrata < ChefCompat::Resource
+  class RhsmErrata < Chef::Resource
     include RhsmCookbook::RhsmHelpers
 
     resource_name :rhsm_errata
