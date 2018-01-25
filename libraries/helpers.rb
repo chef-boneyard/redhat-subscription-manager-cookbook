@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,10 +24,10 @@ module RhsmCookbook
       command = %w(subscription-manager register)
 
       unless activation_keys.empty?
-        raise 'Unable to register - you must specify organization when using activation keys' if organization.nil?
+        raise 'Unable to register - you must specify organization when using activation keys' if new_resource.organization.nil?
 
         command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
-        command << "--org=#{Shellwords.shellescape(organization)}"
+        command << "--org=#{Shellwords.shellescape(new_resource.organization)}"
         command << '--force' if force
 
         return command.join(' ')
