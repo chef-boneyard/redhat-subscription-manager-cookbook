@@ -18,8 +18,6 @@
 
 module RhsmCookbook
   class RhsmRepo < Chef::Resource
-    include RhsmCookbook::RhsmHelpers
-
     resource_name :rhsm_repo
 
     property :repo_name, String, name_property: true
@@ -38,6 +36,10 @@ module RhsmCookbook
         action :run
         only_if { repo_enabled?(repo_name) }
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

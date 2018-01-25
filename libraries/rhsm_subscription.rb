@@ -18,8 +18,6 @@
 
 module RhsmCookbook
   class RhsmSubscription < Chef::Resource
-    include RhsmCookbook::RhsmHelpers
-
     resource_name :rhsm_subscription
 
     property :pool_id, String, name_property: true
@@ -38,6 +36,10 @@ module RhsmCookbook
         action :run
         only_if { subscription_attached?(pool_id) }
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

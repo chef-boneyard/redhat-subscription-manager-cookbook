@@ -18,8 +18,6 @@
 
 module RhsmCookbook
   class RhsmRegister < Chef::Resource
-    include RhsmCookbook::RhsmHelpers
-
     resource_name :rhsm_register
 
     property :_name_unused,          String, name_property: true
@@ -76,6 +74,10 @@ module RhsmCookbook
         command 'subscription-manager clean'
         action :nothing
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

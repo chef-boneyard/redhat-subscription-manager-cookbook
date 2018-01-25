@@ -18,8 +18,6 @@
 
 module RhsmCookbook
   class RhsmErrataLevel < Chef::Resource
-    include RhsmCookbook::RhsmHelpers
-
     resource_name :rhsm_errata_level
 
     property :errata_level, String, name_property: true
@@ -35,6 +33,10 @@ module RhsmCookbook
         command "yum update --sec-severity=#{errata_level.capitalize} -y"
         action :run
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

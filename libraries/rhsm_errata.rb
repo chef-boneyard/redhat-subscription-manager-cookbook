@@ -18,8 +18,6 @@
 
 module RhsmCookbook
   class RhsmErrata < Chef::Resource
-    include RhsmCookbook::RhsmHelpers
-
     resource_name :rhsm_errata
 
     property :errata_id, String, name_property: true
@@ -29,6 +27,10 @@ module RhsmCookbook
         command "yum update --advisory #{new_resource.errata_id} -y"
         action :run
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end
