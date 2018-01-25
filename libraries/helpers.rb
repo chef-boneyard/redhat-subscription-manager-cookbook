@@ -38,7 +38,7 @@ module RhsmCookbook
 
         command << "--username=#{Shellwords.shellescape(new_resource.username)}"
         command << "--password=#{Shellwords.shellescape(new_resource.password)}"
-        command << "--environment=#{Shellwords.shellescape(new_resource.nvironment)}" if using_satellite_host?
+        command << "--environment=#{Shellwords.shellescape(new_resource.environment)}" if using_satellite_host?
         command << '--auto-attach' if new_resource.auto_attach
         command << '--force' if new_resource.force
 
