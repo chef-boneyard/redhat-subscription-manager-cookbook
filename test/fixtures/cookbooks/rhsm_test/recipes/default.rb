@@ -2,7 +2,7 @@
 # Cookbook Name:: rhsm-test
 # Recipe:: default
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,8 @@
 rhsm_register 'myhost' do
   activation_key node['rhsm']['activation_key']
   organization node['rhsm']['organization']
-  satellite_host node['rhsm']['satellite_host']
 end
 
 rhsm_errata_level 'Low'
+
+rhsm_errata 'RHSA-2016:2972'

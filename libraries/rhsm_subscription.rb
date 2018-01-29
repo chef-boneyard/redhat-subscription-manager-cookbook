@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,10 @@
 #
 
 module RhsmCookbook
-  class RhsmSubscription < ChefCompat::Resource
-    include RhsmCookbook::RhsmHelpers
-
+  class RhsmSubscription < Chef::Resource
     resource_name :rhsm_subscription
 
-    property :pool_id, kind_of: String, name_property: true
+    property :pool_id, String, name_property: true
 
     action :attach do
       execute "Attach subscription pool #{pool_id}" do
@@ -38,6 +36,10 @@ module RhsmCookbook
         action :run
         only_if { subscription_attached?(pool_id) }
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

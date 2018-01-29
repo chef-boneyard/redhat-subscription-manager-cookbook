@@ -1,24 +1,17 @@
----
 driver:
-  name: ec2
-  region: us-east-1
-  availability_zone: a
-  instance_type: t2.micro
-  associate_public_ip: true
-  tags:
-    created-by: test-kitchen
-    X-Project: Partner Engineering / Red Hat Satellite
+  name: vagrant
 
 provisioner:
   name: chef_zero
+  deprecations_as_errors: true
 
-transport:
-  username: ec2-user
+verifier:
+  name: inspec
 
 platforms:
   - name: rhel7
-    driver:
-      image_id: ami-12663b7a
+    driver_config:
+      box: iamseth/rhel-7.3
 
 suites:
   - name: default
@@ -27,5 +20,4 @@ suites:
     attributes:
       rhsm:
         activation_key: <%= ENV['rhsm_activation_key'] %>
-        satellite_host: <%= ENV['rhsm_satellite_host'] %>
         organization: <%= ENV['rhsm_organization'] %>

@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,24 +17,26 @@
 #
 
 module RhsmCookbook
-  class RhsmErrataLevel < ChefCompat::Resource
-    include RhsmCookbook::RhsmHelpers
-
+  class RhsmErrataLevel < Chef::Resource
     resource_name :rhsm_errata_level
 
-    property :errata_level, kind_of: String, name_property: true
+    property :errata_level, String, name_property: true
 
     action :install do
-      validate_errata_level!(errata_level)
+      validate_errata_level!(new_resource.errata_level)
       yum_package 'yum-plugin-security' do
         action :install
         only_if { node['platform_version'].to_i == 6 }
       end
 
-      execute "Install any #{errata_level} errata" do
-        command "yum update --sec-severity=#{errata_level.capitalize} -y"
+      execute "Install any #{new_resource.errata_level} errata" do
+        command "yum update --sec-severity=#{new_resource.errata_level.capitalize} -y"
         action :run
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

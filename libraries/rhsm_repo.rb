@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,10 @@
 #
 
 module RhsmCookbook
-  class RhsmRepo < ChefCompat::Resource
-    include RhsmCookbook::RhsmHelpers
-
+  class RhsmRepo < Chef::Resource
     resource_name :rhsm_repo
 
-    property :repo_name, kind_of: String, name_property: true
+    property :repo_name, String, name_property: true
 
     action :enable do
       execute "Enable repository #{repo_name}" do
@@ -38,6 +36,10 @@ module RhsmCookbook
         action :run
         only_if { repo_enabled?(repo_name) }
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

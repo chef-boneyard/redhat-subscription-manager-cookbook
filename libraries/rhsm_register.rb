@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,42 +17,41 @@
 #
 
 module RhsmCookbook
-  class RhsmRegister < ChefCompat::Resource
-    include RhsmCookbook::RhsmHelpers
-
+  class RhsmRegister < Chef::Resource
     resource_name :rhsm_register
 
-    property :_name_unused,          kind_of: String, name_property: true
-    property :activation_key,        kind_of: [ String, Array ]
-    property :satellite_host,        kind_of: String
-    property :organization,          kind_of: String
-    property :environment,           kind_of: String
-    property :username,              kind_of: String
-    property :password,              kind_of: String
-    property :auto_attach,           kind_of: [ TrueClass, FalseClass ], default: false
-    property :install_katello_agent, kind_of: [ TrueClass, FalseClass ], default: true
-    property :sensitive,             kind_of: [ TrueClass, FalseClass ], default: true
-    property :force,                 kind_of: [ TrueClass, FalseClass ], default: false
+    property :_name_unused,          String, name_property: true
+    property :activation_key,        [String, Array]
+    property :satellite_host,        String
+    property :organization,          String
+    property :environment,           String
+    property :username,              String
+    property :password,              String
+    property :auto_attach,           [TrueClass, FalseClass], default: false
+    property :install_katello_agent, [TrueClass, FalseClass], default: true
+    property :force,                 [TrueClass, FalseClass], default: false
 
     action :register do
-      remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
-        source "http://#{new_resource.satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
-        action :create
-        notifies :install, 'yum_package[katello-ca-consumer-latest]', :immediately
-        not_if { new_resource.satellite_host.nil? || registered_with_rhsm? || katello_cert_rpm_installed? }
+      unless new_resource.satellite_host.nil? || registered_with_rhsm?
+        remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
+          source "http://#{new_resource.satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
+          action :create
+          notifies :install, 'yum_package[katello-ca-consumer-latest]', :immediately
+          not_if { katello_cert_rpm_installed? }
+        end
+
+        yum_package 'katello-ca-consumer-latest' do
+          options '--nogpgcheck'
+          source "#{Chef::Config[:file_cache_path]}/katello-package.rpm"
+          action :nothing
+        end
+
+        file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
+          action :delete
+        end
       end
 
-      yum_package 'katello-ca-consumer-latest' do
-        options '--nogpgcheck'
-        source "#{Chef::Config[:file_cache_path]}/katello-package.rpm"
-        action :nothing
-      end
-
-      file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
-        action :delete
-      end
-
-      execute 'Register to RHSM' do # ~FC009
+      execute 'Register to RHSM' do
         sensitive new_resource.sensitive
         command register_command
         action :run
@@ -61,7 +60,7 @@ module RhsmCookbook
 
       yum_package 'katello-agent' do
         action :install
-        only_if { install_katello_agent }
+        only_if { new_resource.install_katello_agent && new_resource.satellite_host }
       end
     end
 
@@ -77,6 +76,10 @@ module RhsmCookbook
         command 'subscription-manager clean'
         action :nothing
       end
+    end
+
+    action_class do
+      include RhsmCookbook::RhsmHelpers
     end
   end
 end

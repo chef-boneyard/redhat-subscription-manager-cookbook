@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,3 +18,10 @@
 
 require 'chefspec'
 require 'chefspec/berkshelf'
+
+RSpec.configure do |config|
+  config.formatter = :documentation
+  config.color = true
+  config.platform = 'redhat'
+  config.version = '7.4'
+end

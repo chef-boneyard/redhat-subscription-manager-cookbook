@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -230,7 +230,7 @@ describe 'rhsm_test::unit' do
   context 'when the host is rhel6' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(
-        platform: 'redhat', version: '6.1',
+        platform: 'redhat', version: '6.9',
         step_into: 'rhsm_errata_level'
       ).converge(described_recipe)
     end

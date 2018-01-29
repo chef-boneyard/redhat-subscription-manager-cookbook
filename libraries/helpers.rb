@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,40 +20,40 @@ require 'shellwords'
 
 module RhsmCookbook
   module RhsmHelpers
-    def register_command # rubocop:disable Metrics/AbcSize
+    def register_command
       command = %w(subscription-manager register)
 
       unless activation_keys.empty?
-        raise 'Unable to register - must specify organization when using activation keys' if organization.nil?
+        raise 'Unable to register - you must specify organization when using activation keys' if new_resource.organization.nil?
 
         command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
-        command << "--org=#{Shellwords.shellescape(organization)}"
-        command << "--force" if force
+        command << "--org=#{Shellwords.shellescape(new_resource.organization)}"
+        command << '--force' if new_resource.force
 
         return command.join(' ')
       end
 
-      if username && password
-        raise 'Unable to register - must specify environment when using username/password' if environment.nil? && using_satellite_host?
+      if new_resource.username && new_resource.password
+        raise 'Unable to register - you must specify environment when using username/password' if new_resource.environment.nil? && using_satellite_host?
 
-        command << "--username=#{Shellwords.shellescape(username)}"
-        command << "--password=#{Shellwords.shellescape(password)}"
-        command << "--environment=#{Shellwords.shellescape(environment)}" if using_satellite_host?
-        command << '--auto-attach' if auto_attach
-        command << "--force" if force
+        command << "--username=#{Shellwords.shellescape(new_resource.username)}"
+        command << "--password=#{Shellwords.shellescape(new_resource.password)}"
+        command << "--environment=#{Shellwords.shellescape(new_resource.environment)}" if using_satellite_host?
+        command << '--auto-attach' if new_resource.auto_attach
+        command << '--force' if new_resource.force
 
         return command.join(' ')
       end
 
-      raise 'Unable to create register command - must specify activation_key or username/password'
+      raise 'Unable to create register command - you must specify activation_key or username/password'
     end
 
     def using_satellite_host?
-      !satellite_host.nil?
+      !new_resource.satellite_host.nil?
     end
 
     def activation_keys
-      Array(activation_key)
+      Array(new_resource.activation_key)
     end
 
     def registered_with_rhsm?
@@ -95,7 +95,7 @@ module RhsmCookbook
       cmd.stdout.lines.each do |line|
         line.strip!
         key, value = line.split(/:\s+/, 2)
-        next unless [ 'Pool ID', 'Serial' ].include?(key)
+        next unless ['Pool ID', 'Serial'].include?(key)
 
         if key == 'Pool ID'
           pool = value

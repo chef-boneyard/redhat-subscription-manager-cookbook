@@ -1,6 +1,6 @@
 #
 # Author:: Chef Partner Engineering (<partnereng@chef.io>)
-# Copyright:: Copyright (c) 2015 Chef Software, Inc.
+# Copyright:: 2015-2018 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,9 @@
 # limitations under the License.
 #
 
-require 'spec_helper'
-
 describe 'rhsm-test::default' do
   it 'registered with Red Hat Satellite' do
     expect(command('subscription-manager').stdout).not_to match(/Overall Status: Unknown/)
-  end
-
-  it 'installed the katello-agent package' do
-    expect(package('katello-agent')).to be_installed
   end
 
   it 'installed all Low-level errata' do
