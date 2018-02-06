@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the redhat_subscription_manager cookbook.
 
+## 1.0.1 (2018-02-06)
+
+- Resolve a Chef 14 deprecation warning in rhsm_subscription resource
+
 ## 1.0.0 (2018-01-29)
 
 - Removed the dependency on the compat_resource cookbook and instead require Chef 12.7 or later. This also fixes issues with running this cookbook on more recent Chef releases where compat_resource is no longer functional.
