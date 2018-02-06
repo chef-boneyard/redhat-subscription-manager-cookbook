@@ -23,18 +23,18 @@ module RhsmCookbook
     property :pool_id, String, name_property: true
 
     action :attach do
-      execute "Attach subscription pool #{pool_id}" do
-        command "subscription-manager attach --pool=#{pool_id}"
+      execute "Attach subscription pool #{new_resource.pool_id}" do
+        command "subscription-manager attach --pool=#{new_resource.pool_id}"
         action :run
-        not_if { subscription_attached?(pool_id) }
+        not_if { subscription_attached?(new_resource.pool_id) }
       end
     end
 
     action :remove do
-      execute "Remove subscription pool #{pool_id}" do
-        command "subscription-manager remove --serial=#{pool_serial(pool_id)}"
+      execute "Remove subscription pool #{new_resource.pool_id}" do
+        command "subscription-manager remove --serial=#{pool_serial(new_resource.pool_id)}"
         action :run
-        only_if { subscription_attached?(pool_id) }
+        only_if { subscription_attached?(new_resource.pool_id) }
       end
     end
 
