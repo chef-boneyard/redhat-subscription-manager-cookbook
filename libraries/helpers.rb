@@ -80,11 +80,6 @@ module RhsmCookbook
       !cmd.stdout.match(/Repo ID:\s+#{repo}$/).nil?
     end
 
-    def validate_errata_level!(level)
-      raise "Invalid errata level: #{level.downcase} - must be: critical, moderate, important, or low" unless
-        %w(critical moderate important low).include?(level.downcase)
-    end
-
     def serials_by_pool
       serials = {}
       pool = nil

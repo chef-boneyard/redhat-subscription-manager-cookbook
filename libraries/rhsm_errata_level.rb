@@ -20,10 +20,13 @@ module RhsmCookbook
   class RhsmErrataLevel < Chef::Resource
     resource_name :rhsm_errata_level
 
-    property :errata_level, String, name_property: true
+    property :errata_level,
+             kind_of: String,
+             coerce: proc { |x| x.downcase },
+             equal_to: %w{ critical moderate important low },
+             name_property: true
 
     action :install do
-      validate_errata_level!(new_resource.errata_level)
       yum_package 'yum-plugin-security' do
         action :install
         only_if { node['platform_version'].to_i == 6 }
@@ -33,10 +36,6 @@ module RhsmCookbook
         command "yum update --sec-severity=#{new_resource.errata_level.capitalize} -y"
         action :run
       end
-    end
-
-    action_class do
-      include RhsmCookbook::RhsmHelpers
     end
   end
 end
