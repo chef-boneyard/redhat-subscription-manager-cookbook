@@ -21,7 +21,7 @@ module RhsmCookbook
     resource_name :rhsm_register
 
     property :_name_unused,          String, name_property: true
-    property :activation_key,        [String, Array]
+    property :activation_key,        [String, Array], coerce: proc { |x| Array(x) }
     property :satellite_host,        String
     property :organization,          String
     property :environment,           String

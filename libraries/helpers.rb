@@ -23,10 +23,10 @@ module RhsmCookbook
     def register_command
       command = %w(subscription-manager register)
 
-      unless activation_keys.empty?
+      unless new_resource.activation_key.empty?
         raise 'Unable to register - you must specify organization when using activation keys' if new_resource.organization.nil?
 
-        command << activation_keys.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
+        command << new_resource.activation_key.map { |key| "--activationkey=#{Shellwords.shellescape(key)}" }
         command << "--org=#{Shellwords.shellescape(new_resource.organization)}"
         command << '--force' if new_resource.force
 
@@ -50,10 +50,6 @@ module RhsmCookbook
 
     def using_satellite_host?
       !new_resource.satellite_host.nil?
-    end
-
-    def activation_keys
-      Array(new_resource.activation_key)
     end
 
     def registered_with_rhsm?
