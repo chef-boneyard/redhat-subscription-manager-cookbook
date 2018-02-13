@@ -233,19 +233,6 @@ describe 'RhsmCookbook::RhsmHelpers' do
     end
   end
 
-  describe '#validate_errata_level!' do
-    it 'does not raise exception for known errata levels' do
-      expect { resource.validate_errata_level!('Critical') }.not_to raise_error
-      expect { resource.validate_errata_level!('Moderate') }.not_to raise_error
-      expect { resource.validate_errata_level!('Important') }.not_to raise_error
-      expect { resource.validate_errata_level!('Low') }.not_to raise_error
-    end
-
-    it 'raises an exception for an unknown errata level' do
-      expect { resource.validate_errata_level!('UnknownLevel') }.to raise_error(RuntimeError)
-    end
-  end
-
   describe '#serials_by_pool' do
     let(:cmd) { double('cmd') }
     let(:output) do
