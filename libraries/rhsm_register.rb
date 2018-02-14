@@ -32,6 +32,8 @@ module RhsmCookbook
     property :force,                 [TrueClass, FalseClass], default: false
 
     action :register do
+      package 'subscription-manager'
+
       unless new_resource.satellite_host.nil? || registered_with_rhsm?
         remote_file "#{Chef::Config[:file_cache_path]}/katello-package.rpm" do
           source "http://#{new_resource.satellite_host}/pub/katello-ca-consumer-latest.noarch.rpm"
