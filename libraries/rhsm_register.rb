@@ -60,7 +60,7 @@ module RhsmCookbook
 
       yum_package 'katello-agent' do
         action :install
-        only_if { new_resource.install_katello_agent && new_resource.satellite_host }
+        only_if { new_resource.install_katello_agent && !new_resource.satellite_host.nil? }
       end
     end
 
