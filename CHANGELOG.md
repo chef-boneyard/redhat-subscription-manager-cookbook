@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the redhat_subscription_manager cookbook.
 
+## 1.0.2 (2018-02-14)
+
+- Fix only_if for katello-agent install in the register resource
+- Update disable action text for the execute resource in the repo resource
+- Updated the register resource to install subscription-manager which may be missing
+- Simplified logic around activation_key property in the register resource
+- Added native property validation to errata_level property in errata_level resource
+
 ## 1.0.1 (2018-02-06)
 
 - Resolve a Chef 14 deprecation warning in rhsm_subscription resource
