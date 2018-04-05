@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the redhat_subscription_manager cookbook.
 
+## 1.0.3 (2018-04-05)
+
+- Fix username/password based registration
+
 ## 1.0.2 (2018-02-14)
 
 - Fix only_if for katello-agent install in the register resource
