@@ -23,7 +23,7 @@ module RhsmCookbook
     property :errata_level,
              kind_of: String,
              coerce: proc { |x| x.downcase },
-             equal_to: %w{ critical moderate important low },
+             equal_to: %w( critical moderate important low ),
              name_property: true
 
     action :install do
