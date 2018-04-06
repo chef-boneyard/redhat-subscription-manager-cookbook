@@ -1,3 +1,5 @@
+The resources in this cookbook now ship as part of Chef 14\. This cookbook is now deprecated and no further updates will be made. We highly recommend you update to Chef 14 and submit and issues you find to the Chef github repo at <https://github.com/chef/chef>
+
 # redhat_subscription_manager cookbook
 
 The Red Hat Subscription Manager (RHSM) cookbook provides custom resources for use in recipes to interact with RHSM or a locally-installed Red Hat Satellite. These resources allow you to configure your hosts' registration status, repo status, and installation of errata.
